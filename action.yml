@@ -1,5 +1,5 @@
-name: 'Export Cloudflare Config to Git'
-description: 'A GitHub Action that exports Cloudflare zone configuration (DNS, rate limits, settings) to versioned JSON files in your repository.'
+name: 'Saved Cloudflare config to Git'
+description: 'A GitHub Action that saves Cloudflare zone configuration (DNS, rulesets, settings) to versioned JSON files in your repository.'
 author: 'pronamic'
 
 branding:
@@ -24,8 +24,8 @@ runs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Run export script
-      run: php ${{ github.action_path }}/export-cloudflare.php
+    - name: Run save script
+      run: php ${{ github.action_path }}/save-cloudflare-config.php
       shell: bash
       env:
         INPUT_API_TOKEN: ${{ inputs.api_token }}
