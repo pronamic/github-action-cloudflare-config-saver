@@ -73,17 +73,22 @@ function get_required_input( $name ) {
  */
 $api_token = get_required_input( 'api_token' );
 $zone_id   = get_required_input( 'zone_id' );
+$directory = get_required_input( 'directory' );
 
-$directory = __DIR__ . '/cloudflare-config/';
+if ( '' === $directory ) {
+    echo format_error( escape_sequence( '90' ) . 'Directory empty' );
+}
+
+$path = getcwd() . '/' . $directory;
 
 echo $api_token, PHP_EOL;
 echo $zone_id, PHP_EOL;
 
-$command = "rm -rf $directory";
+$command = "rm -rf $path";
 
 echo run_command( $command );
 
-$command = "mkdir -p $directory";
+$command = "mkdir -p $path";
 
 echo run_command( $command );
 
@@ -117,7 +122,7 @@ $zone_details_object = json_decode( $zone_details_json );
 
 $zone_name = $zone_details_object->result->name;
 
-$zone_details_filename = $directory . "/{$zone_name}-details.json";
+$zone_details_filename = $path . "/{$zone_name}-details.json";
 
 file_put_contents(
 	$zone_details_filename,
@@ -148,7 +153,7 @@ foreach ( $settings_ids as $setting_id ) {
     
 	$zone_setting_object = json_decode( $zone_setting_json );
     
-	$zone_setting_filename = $directory . "/{$zone_name}-setting-{$setting_id}.json";
+	$zone_setting_filename = $path . "/{$zone_name}-setting-{$setting_id}.json";
     
 	file_put_contents(
 		$zone_setting_filename,
@@ -175,7 +180,7 @@ $zone_dns_records = preg_replace(
 	$zone_dns_records
 );
 
-$zone_dns_records_filename = $directory . "/{$zone_name}.zone";
+$zone_dns_records_filename = $path . "/{$zone_name}.zone";
 
 file_put_contents(
 	$zone_dns_records_filename,
@@ -198,7 +203,7 @@ $zone_rulesets_json = run_shell_exec( $command );
 
 $zone_rulesets_object = json_decode( $zone_rulesets_json );
 
-$zone_rulesets_filename = $directory . "/{$zone_name}-rulesets.json";
+$zone_rulesets_filename = $path . "/{$zone_name}-rulesets.json";
 
 file_put_contents(
 	$zone_rulesets_filename,
@@ -236,7 +241,7 @@ foreach ( $items as $item ) {
     
 	$zone_ruleset_object = json_decode( $zone_ruleset_json );
     
-	$zone_ruleset_filename = $directory . "/{$zone_name}-ruleset-{$ruleset_id}.json";
+	$zone_ruleset_filename = $path . "/{$zone_name}-ruleset-{$ruleset_id}.json";
     
 	file_put_contents(
 		$zone_ruleset_filename,
