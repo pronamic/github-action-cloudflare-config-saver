@@ -187,11 +187,14 @@ $zone_dns_records = preg_replace(
 
 /**
  * Redact SOA record serial number.
+ * 
+ * Example:
+ * example.com	3600	IN	SOA	harmony.ns.cloudflare.com. dns.cloudflare.com. 2049785926 10000 2400 604800 3600
  */
 $zone_dns_records = preg_replace(
-    '/^(@\s+\d+\s+IN\s+SOA\s+\S+\s+\S+\s+)(\d{10})(\s+\d+\s+\d+\s+\d+\s+\d+)/m',
-    '$1●●●●●●●●●●$3',
-    $zone_dns_records
+	'/^(\S+\s+\d+\s+IN\s+SOA\s+\S+\s+\S+\s+)(\d{10})(\s+\d+\s+\d+\s+\d+\s+\d+)$/m',
+	'$1●●●●●●●●●●$3',
+	$zone_dns_records
 );
 
 $zone_dns_records_filename = $path . "/{$zone_name}.zone";
