@@ -293,7 +293,7 @@ $pr_title = "Cloudflare Config Update – $timestamp";
 
 $command = <<<EOT
 gh pr create \
-	--title "$pr_title"
+	--title "$pr_title" \
     --body "$pr_body"
 EOT;
 
