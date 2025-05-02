@@ -294,5 +294,9 @@ $pr_title = "Cloudflare Config Update – $timestamp";
 $command = <<<EOT
 gh pr create \
 	--title "$pr_title"
-    --body "ThisThis PR contains updated Cloudflare configuration files."
+    --body "$pr_body"
 EOT;
+
+run_command( $command );
+
+run_command( 'gh pr merge --auto --merge --delete-branch' );
