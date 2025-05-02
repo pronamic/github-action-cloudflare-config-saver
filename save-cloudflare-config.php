@@ -306,4 +306,4 @@ EOT;
 
 run_command( $command );
 
-run_command( 'gh pr merge --auto --merge --delete-branch' );
+run_command( 'gh pr merge --admin --merge --delete-branch' );
