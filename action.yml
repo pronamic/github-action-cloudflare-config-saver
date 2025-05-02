@@ -24,5 +24,5 @@ runs:
       run: php ${{ github.action_path }}/export-cloudflare.php
       shell: bash
       env:
-        API_TOKEN: ${{ inputs.api_token }}
-        ZONE_ID: ${{ inputs.zone_id }}
+        INPUT_API_TOKEN: ${{ inputs.api_token }}
+        INPUT_ZONE_ID: ${{ inputs.zone_id }}
