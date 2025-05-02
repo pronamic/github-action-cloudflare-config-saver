@@ -124,6 +124,8 @@ $zone_name = $zone_details_object->result->name;
 
 $zone_details_filename = $path . "/{$zone_name}-details.json";
 
+$zone_details_object->result->development_mode = null;
+
 file_put_contents(
 	$zone_details_filename,
 	json_encode( $zone_details_object, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES )
