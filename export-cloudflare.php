@@ -271,6 +271,9 @@ $pr_title = "Cloudflare Config Update ($date)";
 
 $pr_body = "Automated backup of Cloudflare settings on $date.";
 
+run_command( 'git config user.name "pronamic-cloudflare-config-exporter[bot]"' );
+run_command( 'git config user.email "pronamic-cloudflare-config-exporter[bot]@users.noreply.github.com"' );
+
 run_command( "git checkout -b $branch" );
 
 run_command( 'git add .' );
