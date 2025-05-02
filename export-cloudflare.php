@@ -261,6 +261,13 @@ if ( '' === $status ) {
 }
 
 /**
+ * GitHub CLI.
+ * 
+ * @link https://cli.github.com/
+ */
+run_command( 'gh auth status' );
+
+/**
  * Git.
  */
 $date = date( 'Y-m-d' );
@@ -287,8 +294,6 @@ run_command( "git push origin $branch" );
  * 
  * @link https://cli.github.com/manual/gh_pr_create
  */
-run_command( 'gh auth status' );
-
 $timestamp = date( 'Y-m-d H:i' );
 
 $pr_title = "Cloudflare Config Update – $timestamp";
