@@ -13,6 +13,10 @@ inputs:
   zone_id:
     description: 'Cloudflare Zone ID to export'
     required: true
+  directory:
+    description: 'Directory where the Cloudflare configuration files will be stored (default: cloudflare-config).'
+    required: false
+    default: 'cloudflare-config'
 
 runs:
   using: 'composite'
@@ -26,3 +30,4 @@ runs:
       env:
         INPUT_API_TOKEN: ${{ inputs.api_token }}
         INPUT_ZONE_ID: ${{ inputs.zone_id }}
+        INPUT_DIRECTORY: ${{ inputs.directory }}
