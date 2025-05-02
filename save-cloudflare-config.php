@@ -176,10 +176,22 @@ EOT;
 
 $zone_dns_records = run_shell_exec( $command );
 
+/**
+ * Redact exported date.
+ */
 $zone_dns_records = preg_replace(
 	'/^;; Exported:   \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/m',
 	';; Exported:   ●●●●-●●-●● ●●:●●:●●',
 	$zone_dns_records
+);
+
+/**
+ * Redact SOA record serial number.
+ */
+$zone_dns_records = preg_replace(
+    '/^(@\s+\d+\s+IN\s+SOA\s+\S+\s+\S+\s+)(\d{10})(\s+\d+\s+\d+\s+\d+\s+\d+)/m',
+    '$1●●●●●●●●●●$3',
+    $zone_dns_records
 );
 
 $zone_dns_records_filename = $path . "/{$zone_name}.zone";
