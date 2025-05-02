@@ -287,6 +287,8 @@ run_command( "git push origin $branch" );
  * 
  * @link https://cli.github.com/manual/gh_pr_create
  */
+run_command( 'gh auth status' );
+
 $timestamp = date( 'Y-m-d H:i' );
 
 $pr_title = "Cloudflare Config Update – $timestamp";
