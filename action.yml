@@ -1,0 +1,33 @@
+name: 'Export Cloudflare Config to Git'
+description: 'A GitHub Action that exports Cloudflare zone configuration (DNS, rate limits, settings) to versioned JSON files in your repository.'
+author: 'pronamic'
+
+branding:
+  icon: 'download-cloud'
+  color: 'orange'
+
+inputs:
+  api_token:
+    description: 'Cloudflare API token with read permissions for the target zone'
+    required: true
+  zone_id:
+    description: 'Cloudflare Zone ID to export'
+    required: true
+  automerge:
+    description: 'Whether to automatically merge the created pull request (true/false)'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run export script
+      run: php export-cloudflare.php
+      shell: bash
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ inputs.api_token }}
+        CLOUDFLARE_ZONE_ID: ${{ inputs.zone_id }}
+        AUTOMERGE: ${{ inputs.automerge }}
