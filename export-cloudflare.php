@@ -243,3 +243,15 @@ foreach ( $items as $item ) {
 		json_encode( $zone_ruleset_object, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES )
 	);
 }
+
+/**
+ * Check Git status.
+ */
+$status = trim( shell_exec( 'git status --porcelain' ) );
+
+if ( '' === $status ) {
+    echo 'No changes';
+
+    exit( 0 );
+}
+
