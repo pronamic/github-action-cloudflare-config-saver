@@ -272,7 +272,7 @@ run_command( 'gh auth status' );
  */
 $date = date( 'Y-m-d' );
 
-$branch = "cloudflare-config-update-$date";
+$branch = "pronamic-cloudflare-config-exporter/$date";
 
 $pr_title = "Cloudflare Config Update ($date)";
 
@@ -301,7 +301,7 @@ $pr_title = "Cloudflare Config Update – $timestamp";
 $command = <<<EOT
 gh pr create \
 	--title "$pr_title" \
-    --body "$pr_body"
+	--body "$pr_body"
 EOT;
 
 run_command( $command );
