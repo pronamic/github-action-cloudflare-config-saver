@@ -280,7 +280,7 @@ run_command( 'git add .' );
 
 run_command( "git commit -m '$pr_title'" );
 
-run_command( "git push origin $branch'" );
+run_command( "git push origin $branch" );
 
 /**
  * GitHub PR create.
