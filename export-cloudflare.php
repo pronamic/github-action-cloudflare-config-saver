@@ -195,8 +195,8 @@ file_put_contents(
  */
 $command = <<<EOT
 curl https://api.cloudflare.com/client/v4/zones/$zone_id/rulesets \
-     -H "Authorization: Bearer $api_token" \
-     -H "Content-Type:application/json"
+	-H "Authorization: Bearer $api_token" \
+	-H "Content-Type:application/json"
 EOT;
 
 $zone_rulesets_json = run_shell_exec( $command );
@@ -238,11 +238,11 @@ foreach ( $items as $item ) {
 	EOT;
 
 	$zone_ruleset_json = run_shell_exec( $command );
-    
+
 	$zone_ruleset_object = json_decode( $zone_ruleset_json );
-    
+
 	$zone_ruleset_filename = $path . "/{$zone_name}-ruleset-{$ruleset_id}.json";
-    
+
 	file_put_contents(
 		$zone_ruleset_filename,
 		json_encode( $zone_ruleset_object, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES )
@@ -255,8 +255,41 @@ foreach ( $items as $item ) {
 $status = trim( shell_exec( 'git status --porcelain' ) );
 
 if ( '' === $status ) {
-    echo 'No changes';
+	echo 'No changes';
 
-    exit( 0 );
+	exit( 0 );
 }
 
+/**
+ * Git.
+ */
+$date = date( 'Y-m-d' );
+
+$branch = "cloudflare-config-update-$date";
+
+$pr_title = "Cloudflare Config Update ($date)";
+
+$pr_body = "Automated backup of Cloudflare settings on $date.";
+
+run_command( "git checkout -b $branch" );
+
+run_command( 'git add .' );
+
+run_command( "git commit -m '$pr_title'" );
+
+run_command( "git push origin $branch'" );
+
+/**
+ * GitHub PR create.
+ * 
+ * @link https://cli.github.com/manual/gh_pr_create
+ */
+$timestamp = date( 'Y-m-d H:i' );
+
+$pr_title = "Cloudflare Config Update – $timestamp";
+
+$command = <<<EOT
+gh pr create \
+	--title "$pr_title"
+    --body "ThisThis PR contains updated Cloudflare configuration files."
+EOT;
