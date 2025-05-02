@@ -25,7 +25,7 @@ runs:
       uses: actions/checkout@v4
 
     - name: Run export script
-      run: php export-cloudflare.php
+      run: php ${{ github.action_path }}/export-cloudflare.php
       shell: bash
       env:
         CLOUDFLARE_API_TOKEN: ${{ inputs.api_token }}
