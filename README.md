@@ -65,15 +65,17 @@ jobs:
 
 Store your Cloudflare API Token in [GitHub Secrets](https://docs.github.com/en/actions/security-for-github-actions/security-guides/about-secrets) (`CLOUDFLARE_API_TOKEN`). The token should have read access to rulesets and settings:
 
-### Permissions
+### Cloudflare API Token Permissions
 
-- Zone → Config Rules → Read
-- Zone → Cache Rules → Read
-- Zone → Transform Rules → Read
-- Zone → Zone WAF → Read
-- Zone → Zone Settings → Read
-- Zone → DNS → Read
-- Zone → Firewall Services → Read
+| Resources | Permissions       | Permissions levels |
+| --------- | ----------------- | ------------------ |
+| Zone      | Config Rules      | Read               |
+| Zone      | Cache Rules       | Read               |
+| Zone      | Transform Rules   | Read               |
+| Zone      | Zone WAF          | Read               |
+| Zone      | Zone Settings     | Read               |
+| Zone      | DNS               | Read               |
+| Zone      | Firewall Services | Read               |
 
 ## Contributions
 
