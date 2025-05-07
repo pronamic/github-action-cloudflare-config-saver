@@ -311,10 +311,6 @@ run_command( "git push origin $branch" );
  * 
  * @link https://cli.github.com/manual/gh_pr_create
  */
-$timestamp = date( 'Y-m-d H:i' );
-
-$pr_title = "Cloudflare Config Update – $timestamp";
-
 $command = <<<EOT
 gh pr create \
 	--title "$pr_title" \
