@@ -220,6 +220,13 @@ $zone_rulesets_json = run_shell_exec( $command );
 
 $zone_rulesets_object = json_decode( $zone_rulesets_json );
 
+foreach ( $zone_rulesets_object->result as &$item ) {
+	if ( 'managed' === $item->kind ) {
+		$item->last_updated = null;
+		$item->version      = null;
+	}
+}
+
 $zone_rulesets_filename = $path . "/{$zone_name}-rulesets.json";
 
 file_put_contents(
