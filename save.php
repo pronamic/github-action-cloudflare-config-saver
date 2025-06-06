@@ -43,7 +43,7 @@ function end_group() {
 
 /**
  * Get input.
- * 
+ *
  * @link https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#inputs
  * @link https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepswith
  * @link https://github.com/actions/checkout/blob/cd7d8d697e10461458bc61a30d094dc601a8b017/dist/index.js#L2699-L2717
@@ -66,6 +66,30 @@ function get_required_input( $name ) {
 	}
 
 	return $value;
+}
+
+/**
+ * Cloudflare API.
+ *
+ * @param string $url       URL.
+ * @param string $api_token API token.
+ */
+function cloudflare_api( $url, $api_token ) {
+	$command = <<<EOT
+	curl --request GET --fail --silent $url \
+		--header "Authorization: Bearer $api_token" \
+		--header "Content-Type: application/json"
+	EOT;
+
+	$response = run_shell_exec( $command );
+
+	if ( null === $response ) {
+		echo format_error( 'Cloudflare API request failed' );
+
+		exit( 1 );
+	}
+
+	return $response;
 }
 
 /**
@@ -107,16 +131,10 @@ EOT;
 
 /**
  * Zone details.
- * 
+ *
  * @link https://developers.cloudflare.com/api/resources/zones/methods/get/
  */
-$command = <<<EOT
-curl https://api.cloudflare.com/client/v4/zones/$zone_id \
-     -H "Authorization: Bearer $api_token" \
-     -H "Content-Type:application/json"
-EOT;
-
-$zone_details_json = run_shell_exec( $command );
+$zone_details_json = cloudflare_api( "https://api.cloudflare.com/client/v4/zones/$zone_id", $api_token );
 
 $zone_details_object = json_decode( $zone_details_json );
 
@@ -133,7 +151,7 @@ file_put_contents(
 
 /**
  * Zone settings.
- * 
+ *
  * @link https://developers.cloudflare.com/api/resources/zones/subresources/settings/methods/get/
  */
 $settings_ids = [
@@ -145,18 +163,12 @@ $settings_ids = [
 ];
 
 foreach ( $settings_ids as $setting_id ) {
-	$command = <<<EOT
-	curl https://api.cloudflare.com/client/v4/zones/$zone_id/settings/$setting_id \
-		-H "Authorization: Bearer $api_token" \
-		-H "Content-Type:application/json"
-	EOT;
+	$zone_setting_json = cloudflare_api( "https://api.cloudflare.com/client/v4/zones/$zone_id/settings/$setting_id", $api_token );
 
-	$zone_setting_json = run_shell_exec( $command );
-    
 	$zone_setting_object = json_decode( $zone_setting_json );
-    
+
 	$zone_setting_filename = $path . "/{$zone_name}-setting-{$setting_id}.json";
-    
+
 	file_put_contents(
 		$zone_setting_filename,
 		json_encode( $zone_setting_object, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES )
@@ -165,16 +177,10 @@ foreach ( $settings_ids as $setting_id ) {
 
 /**
  * DNS-records.
- * 
+ *
  * @ilnk https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/export/
  */
-$command = <<<EOT
-curl https://api.cloudflare.com/client/v4/zones/$zone_id/dns_records/export \
-     -H "Authorization: Bearer $api_token" \
-     -H "Content-Type:application/json"
-EOT;
-
-$zone_dns_records = run_shell_exec( $command );
+$zone_dns_records = cloudflare_api( "https://api.cloudflare.com/client/v4/zones/$zone_id/dns_records/export", $api_token );
 
 /**
  * Redact exported date.
@@ -187,7 +193,7 @@ $zone_dns_records = preg_replace(
 
 /**
  * Redact SOA record serial number.
- * 
+ *
  * Example:
  * example.com	3600	IN	SOA	harmony.ns.cloudflare.com. dns.cloudflare.com. 2049785926 10000 2400 604800 3600
  */
@@ -206,17 +212,11 @@ file_put_contents(
 
 /**
  * Rulesets.
- * 
+ *
  * @link https://developers.cloudflare.com/api/resources/rulesets/methods/list/
  * @link https://developers.cloudflare.com/api/resources/rate_limits/methods/list/
  */
-$command = <<<EOT
-curl https://api.cloudflare.com/client/v4/zones/$zone_id/rulesets \
-	-H "Authorization: Bearer $api_token" \
-	-H "Content-Type:application/json"
-EOT;
-
-$zone_rulesets_json = run_shell_exec( $command );
+$zone_rulesets_json = cloudflare_api( "https://api.cloudflare.com/client/v4/zones/$zone_id/rulesets", $api_token );
 
 $zone_rulesets_object = json_decode( $zone_rulesets_json );
 
@@ -236,7 +236,7 @@ file_put_contents(
 
 /**
  * Ruleset details.
- * 
+ *
  * @link https://developers.cloudflare.com/api/resources/rulesets/methods/get/
  */
 $items = $zone_rulesets_object->result;
@@ -255,13 +255,7 @@ $items = array_filter(
 foreach ( $items as $item ) {
 	$ruleset_id = $item->id;
 
-	$command = <<<EOT
-	curl https://api.cloudflare.com/client/v4/zones/$zone_id/rulesets/$ruleset_id \
-		-H "Authorization: Bearer $api_token" \
-		-H "Content-Type:application/json"
-	EOT;
-
-	$zone_ruleset_json = run_shell_exec( $command );
+	$zone_ruleset_json = cloudflare_api( "https://api.cloudflare.com/client/v4/zones/$zone_id/rulesets/$ruleset_id", $api_token );
 
 	$zone_ruleset_object = json_decode( $zone_ruleset_json );
 
@@ -286,7 +280,7 @@ if ( '' === $status ) {
 
 /**
  * GitHub CLI.
- * 
+ *
  * @link https://cli.github.com/
  */
 run_command( 'gh auth status' );
@@ -315,7 +309,7 @@ run_command( "git push origin $branch" );
 
 /**
  * GitHub PR create.
- * 
+ *
  * @link https://cli.github.com/manual/gh_pr_create
  */
 $command = <<<EOT
