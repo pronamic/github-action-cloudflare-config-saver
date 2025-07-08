@@ -76,6 +76,8 @@ Store your Cloudflare API Token in [GitHub Secrets](https://docs.github.com/en/a
 | Zone      | Zone Settings     | Read               |
 | Zone      | DNS               | Read               |
 | Zone      | Firewall Services | Read               |
+| Zone      | Single Redirect   | Read               |
+| Zone      | Page Rules        | Read               |
 
 ## Contributions
 
