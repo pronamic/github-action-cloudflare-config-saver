@@ -220,10 +220,10 @@ $zone_rulesets_json = cloudflare_api( "https://api.cloudflare.com/client/v4/zone
 
 $zone_rulesets_object = json_decode( $zone_rulesets_json );
 
-foreach ( $zone_rulesets_object->result as &$item ) {
+foreach ( $zone_rulesets_object->result as $i => $item ) {
 	if ( 'managed' === $item->kind ) {
-		$item->last_updated = null;
-		$item->version      = null;
+        $zone_rulesets_object->result[ $i ]->last_updated = null;
+        $zone_rulesets_object->result[ $i ]->version      = null;
 	}
 }
 
