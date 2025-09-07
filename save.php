@@ -220,18 +220,19 @@ $zone_rulesets_json = cloudflare_api( "https://api.cloudflare.com/client/v4/zone
 
 $zone_rulesets_object = json_decode( $zone_rulesets_json );
 
-
-// Sorteer rulesets op id voor consistente volgorde
-usort($zone_rulesets_object->result, function($a, $b) {
-	return strcmp($a->id, $b->id);
-});
-
 foreach ( $zone_rulesets_object->result as $i => $item ) {
-	   if ( 'managed' === $item->kind ) {
+	if ( 'managed' === $item->kind ) {
 		$zone_rulesets_object->result[ $i ]->last_updated = null;
 		$zone_rulesets_object->result[ $i ]->version      = null;
-	   }
+	}
 }
+
+usort(
+	$zone_rulesets_object->result,
+	function( $a, $b ) {
+		return strcmp( $a->id, $b->id );
+	}
+);
 
 $zone_rulesets_filename = $path . "/{$zone_name}-rulesets.json";
 
