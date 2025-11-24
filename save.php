@@ -160,6 +160,7 @@ $settings_ids = [
 	'security_level',
 	'ssl',
 	'webp',
+	'google-tag-gateway/config',
 ];
 
 foreach ( $settings_ids as $setting_id ) {
@@ -167,29 +168,15 @@ foreach ( $settings_ids as $setting_id ) {
 
 	$zone_setting_object = json_decode( $zone_setting_json );
 
-	$zone_setting_filename = $path . "/{$zone_name}-setting-{$setting_id}.json";
+	$setting_id_slug = str_replace( '/', '-', $setting_id );
+
+	$zone_setting_filename = $path . "/{$zone_name}-setting-{$setting_id_slug}.json";
 
 	file_put_contents(
 		$zone_setting_filename,
 		json_encode( $zone_setting_object, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES )
 	);
 }
-
-/**
- * Google Tag Gateway settings.
- *
- * @link https://api.cloudflare.com/client/v4/zones/cccf7e3fbf031db08a0d482bc8a25e55/settings/google-tag-gateway/config
- */
-$zone_setting_google_tag_gateway_json = cloudflare_api( "https://api.cloudflare.com/client/v4/zones/$zone_id/settings/google-tag-gateway/config", $api_token );
-
-$zone_setting_google_tag_gateway_object = json_decode( $zone_setting_google_tag_gateway_json );
-
-$zone_setting_google_tag_gateway_filename = $path . "/{$zone_name}-setting-google-tag-gateway-config.json";
-
-file_put_contents(
-	$zone_setting_google_tag_gateway_filename,
-	json_encode( $zone_setting_google_tag_gateway_object, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES )
-);
 
 /**
  * DNS-records.
