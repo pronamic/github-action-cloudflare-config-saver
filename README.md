@@ -16,7 +16,7 @@ Useful for backing up, tracking changes, and simplifying Cloudflare config manag
 
 ## Features
 
-- Fetches and stores rulesets, settings, and DNS records from Cloudflare
+- Fetches and stores rulesets, settings, DNS records and Google Tag Gateway settings from Cloudflare
 - Redacts dynamic fields such as export timestamps and SOA serial numbers
 - Saves JSON files to a configurable directory
 - Automatically commits, pushes, and creates a pull request
@@ -78,6 +78,7 @@ Store your Cloudflare API Token in [GitHub Secrets](https://docs.github.com/en/a
 | Zone      | Firewall Services | Read               |
 | Zone      | Single Redirect   | Read               |
 | Zone      | Page Rules        | Read               |
+| Zone      | Google Tag Gateway| Read               |
 
 ## Contributions
 

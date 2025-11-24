@@ -17,6 +17,10 @@ inputs:
     description: 'Directory where the Cloudflare configuration files will be stored (default: cloudflare-config).'
     required: false
     default: 'cloudflare-config'
+  google_tag_gateway:
+    description: 'Save Google Tag Gateway settings (default: false).'
+    required: false
+    default: 'false'
 
 runs:
   using: 'composite'
