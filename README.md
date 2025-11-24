@@ -78,7 +78,15 @@ Store your Cloudflare API Token in [GitHub Secrets](https://docs.github.com/en/a
 | Zone      | Firewall Services | Read               |
 | Zone      | Single Redirect   | Read               |
 | Zone      | Page Rules        | Read               |
-| Zone      | Google Tag Gateway| Read               |
+
+#### Google Tag Gateway
+
+To get the Google tag gateway Setting these permissions are required:
+
+| Resources | Permissions       | Permissions levels |
+| --------- | ----------------- | ------------------ |
+| Zone      | Zaraz             | Read               |
+| Zone      | Zone Settings     | Read               |
 
 ## Contributions
 
